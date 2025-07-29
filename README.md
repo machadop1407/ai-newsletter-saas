@@ -1,53 +1,181 @@
-# Personalized AI Newsletter SaaS
+# Build a Personalized AI Newsletter SaaS with Next.js & Supabase
 
-A Next.js 15+ application that generates personalized weekly newsletters using AI. Users can select their interests from various categories, and the system fetches recent news articles and creates a custom summary using OpenAI.
+<div align="center">
+  <br />
+  <a href="https://youtu.be/ugxI1o5SyMs" target="_blank">
+   <img width="1280" height="720" alt="Personalized AI Newsletter SaaS - Next.js & Supabase Tutorial" src="https://github.com/user-attachments/assets/819fc9b5-713e-4fbe-b659-dc1067d4bd82" />
+  </a>
+  <br />
+  <div>
+    <img src="https://img.shields.io/badge/-Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js" />
+    <img src="https://img.shields.io/badge/-Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
+    <img src="https://img.shields.io/badge/-OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white" alt="OpenAI" />
+    <img src="https://img.shields.io/badge/-Inngest-6366F1?style=for-the-badge&logo=inngest&logoColor=white" alt="Inngest" />
+    <img src="https://img.shields.io/badge/-TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss" alt="Tailwind CSS" />
+  </div>
+  <h3 align="center">Build a Personalized AI Newsletter SaaS with Next.js, Supabase, OpenAI & Inngest</h3>
+  <div align="center">
+    Follow the full video tutorial on  
+    <a href="https://youtu.be/YOUR_VIDEO_ID" target="_blank"><b>YouTube</b></a>
+  </div>
+  <br />
+</div>
 
-## Features
+## 📋 Table of Contents
 
-- 🎯 **Category Selection**: Choose from 8 different news categories
-- 🤖 **AI-Powered Summarization**: Uses OpenAI GPT-4 to create engaging newsletters
-- ⚡ **Real-time Progress**: Live updates during newsletter generation
-- 🔄 **Durable Workflows**: Built with Inngest for reliable background processing
-- 📱 **Responsive Design**: Beautiful, mobile-friendly UI with Tailwind CSS
-- 🚀 **Modern Stack**: Next.js 15+ with App Router and TypeScript
+1. [Introduction](#-introduction)
+2. [Tech Stack](#-tech-stack)
+3. [Features](#-features)
+4. [Quick Start](#-quick-start)
+5. [Screenshots](#-screenshots)
+6. [Deployment](#-deployment)
 
-## Tech Stack
+---
 
-- **Frontend**: Next.js 15+, React, TypeScript, Tailwind CSS
-- **Backend**: Next.js API Routes
-- **Workflows**: Inngest (durable background jobs)
-- **AI**: OpenAI GPT-4
-- **News API**: NewsAPI.org
+## 🚀 Introduction
 
-## Prerequisites
+In this tutorial, you'll learn how to build a production-ready **Personalized AI Newsletter SaaS** using **Next.js**, **Supabase**, **OpenAI**, **Inngest**, and **TailwindCSS**. You'll implement **AI-powered content generation**, **scheduled newsletters**, **user preferences management**, and **email delivery**, all deployed to Vercel.
 
-Before you begin, ensure you have:
+🎥 Watch the full tutorial: [YouTube](https://youtu.be/YOUR_VIDEO_ID)
 
-- Node.js 18+ installed
-- API keys for:
-  - [OpenAI](https://platform.openai.com/api-keys)
-  - [NewsAPI](https://newsapi.org/register)
-  - [Inngest](https://cloud.inngest.com/) (sign up for free)
+---
 
-## Setup Instructions
+## ⚙️ Tech Stack
 
-### 1. Clone and Install
+- **Next.js 15+** – React framework with App Router & server components
+- **Supabase** – Hosted Postgres, authentication & real-time subscriptions
+- **OpenAI GPT-4** – AI-powered newsletter content generation
+- **Inngest** – Durable background jobs for newsletter scheduling
+- **TailwindCSS** – Utility-first styling
+- **TypeScript** – Static typing and developer tooling
+- **EmailJS** – Email delivery service
+- **NewsAPI** – News article fetching
+
+---
+
+## ⚡️ Features
+
+- 🎯 **Category Selection**
+  Choose from 8 different news categories (Technology, Business, Sports, Entertainment, Science, Health, Politics, Environment).
+
+- 🤖 **AI-Powered Summarization**
+  Uses OpenAI GPT-4 to create engaging, personalized newsletter content from recent news articles.
+
+- ⏰ **Scheduled Delivery**
+  Automatically sends newsletters at 9 AM based on user-selected frequency (daily, weekly, bi-weekly).
+
+- 🔄 **Durable Workflows**
+  Built with Inngest for reliable background processing and automatic retries.
+
+- 👤 **User Management**
+  User authentication, preference management, and newsletter activation/deactivation.
+
+- 📱 **Responsive Dashboard**
+  Beautiful, mobile-friendly UI with real-time status updates and preference management.
+
+- 💳 **Subscription Billing**
+  Stripe integration for premium features and subscription management.
+
+- 📧 **Email Delivery**
+  Professional email templates with HTML formatting and tracking.
+
+---
+
+## 👌 Quick Start
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18+)
+- [Supabase CLI](https://supabase.com/docs/guides/cli)
+- Supabase project (URL & ANON key)
+- OpenAI API key
+- Inngest account (signing key)
+- NewsAPI key
+- EmailJS account (service ID, template ID, public key)
+
+### Supabase SQL Statements:
+
+```sql
+-- =========================================================
+-- 1. User Preferences Table
+-- =========================================================
+CREATE TABLE IF NOT EXISTS public.user_preferences (
+  id          bigint GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+  created_at  timestamptz NOT NULL DEFAULT now(),
+  updated_at  timestamptz NOT NULL DEFAULT now(),
+  user_id     text NOT NULL UNIQUE,
+  email       text NOT NULL,
+  categories  text[] NOT NULL DEFAULT '{}',
+  frequency   text NOT NULL DEFAULT 'weekly',
+  is_active   boolean NOT NULL DEFAULT true
+);
+
+-- =========================================================
+-- 2. Enable Row Level Security
+-- =========================================================
+ALTER TABLE public.user_preferences ENABLE ROW LEVEL SECURITY;
+
+-- =========================================================
+-- 3. Policies
+-- =========================================================
+
+-- Users can view their own preferences
+CREATE POLICY "Users can view their own preferences"
+ON public.user_preferences
+FOR SELECT
+USING (user_id = auth.uid()::text);
+
+-- Users can insert their own preferences
+CREATE POLICY "Users can insert their own preferences"
+ON public.user_preferences
+FOR INSERT
+WITH CHECK (user_id = auth.uid()::text);
+
+-- Users can update their own preferences
+CREATE POLICY "Users can update their own preferences"
+ON public.user_preferences
+FOR UPDATE
+USING (user_id = auth.uid()::text)
+WITH CHECK (user_id = auth.uid()::text);
+
+-- Users can delete their own preferences
+CREATE POLICY "Users can delete their own preferences"
+ON public.user_preferences
+FOR DELETE
+USING (user_id = auth.uid()::text);
+
+-- =========================================================
+-- 4. Indexes
+-- =========================================================
+CREATE INDEX IF NOT EXISTS idx_user_preferences_user_id ON public.user_preferences(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_preferences_is_active ON public.user_preferences(is_active);
+
+-- =========================================================
+-- 5. Updated At Trigger
+-- =========================================================
+CREATE OR REPLACE FUNCTION public.set_updated_at()
+RETURNS trigger AS $$
+BEGIN
+  NEW.updated_at = now();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_user_preferences_updated_at ON public.user_preferences;
+CREATE TRIGGER trg_user_preferences_updated_at
+BEFORE UPDATE ON public.user_preferences
+FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
+```
+
+### Clone and Run
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/yourusername/personalized-newsletter.git
 cd personalized-newsletter
 npm install
 ```
 
-### 2. Environment Variables
-
-Copy the example environment file and add your API keys:
-
-```bash
-cp env.example .env.local
-```
-
-Edit `.env.local` and add your API keys:
+1. Copy `env.example` to `.env.local` and fill in your API credentials:
 
 ```env
 # OpenAI API Key for AI summarization
@@ -58,97 +186,73 @@ INGEST_SIGNING_KEY=your_inngest_signing_key_here
 
 # News API key for fetching articles
 NEWS_API_KEY=your_news_api_key_here
+
+# EmailJS configuration for sending newsletters
+EMAILJS_SERVICE_ID=your_emailjs_service_id_here
+EMAILJS_TEMPLATE_ID=your_emailjs_template_id_here
+EMAILJS_PUBLIC_KEY=your_emailjs_public_key_here
+
+# Supabase configuration
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+
+# Stripe configuration
+STRIPE_SECRET_KEY=your_stripe_secret_key
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
 ```
 
-### 3. Run the Development Servers
+2. Start local Supabase emulation (optional):
 
-You need to run two development servers:
+   ```bash
+   supabase start
+   supabase db push
+   ```
 
-**Terminal 1 - Next.js App:**
+3. Run the development servers:
 
-```bash
-npm run dev
-```
+   ```bash
+   # Terminal 1 - Next.js App
+   npm run dev
 
-**Terminal 2 - Inngest Dev Server:**
+   # Terminal 2 - Inngest Dev Server
+   npx inngest dev
+   ```
 
-```bash
-npx inngest dev
-```
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### 4. Access the Application
+---
 
-- **Next.js App**: http://localhost:3000
-- **Inngest Dev UI**: http://localhost:8288
+## 🔗 Useful Links
 
-## How It Works
+- [Next.js Docs](https://nextjs.org/docs)
+- [Supabase Docs](https://supabase.com/docs)
+- [OpenAI API Docs](https://platform.openai.com/docs)
+- [Inngest Docs](https://www.inngest.com/docs)
+- [Tailwind CSS Docs](https://tailwindcss.com/docs)
+- [EmailJS Docs](https://www.emailjs.com/docs)
+- [Vercel](https://vercel.com/)
 
-1. **Category Selection** (`/select`): Users choose their interests from 8 categories
-2. **Workflow Trigger** (`/api/generate`): Sends an Inngest event with selected categories
-3. **Background Processing**: Inngest function fetches news articles and generates AI summary
-4. **Real-time Updates** (`/newsletter`): Frontend polls for progress and displays results
-5. **Newsletter Display**: Shows the final AI-generated newsletter with article count and categories
+---
 
-## Project Structure
+## 📸 Screenshots
 
-```
-personalized-newsletter/
-├── app/
-│   ├── select/
-│   │   └── page.tsx              # Category selection UI
-│   ├── newsletter/
-│   │   └── page.tsx              # Newsletter display & progress
-│   ├── api/
-│   │   ├── generate/
-│   │   │   └── route.ts          # Triggers newsletter generation
-│   │   ├── inngest/
-│   │   │   └── route.ts          # Inngest webhook receiver
-│   │   └── newsletter/
-│   │       └── status/
-│   │           └── route.ts      # Checks generation status
-│   └── page.tsx                  # Redirects to /select
-├── inngest/
-│   ├── client.ts                 # Inngest client configuration
-│   └── functions/
-│       └── newsletter.ts         # Newsletter generation workflow
-├── lib/
-│   └── news.ts                   # News API helper functions
-└── env.example                   # Environment variables template
-```
+### Dashboard
 
-## API Endpoints
+![Dashboard showing user preferences and newsletter status](https://via.placeholder.com/800x400/3B82F6/FFFFFF?text=Dashboard)
 
-- `POST /api/generate` - Start newsletter generation
-- `GET /api/newsletter/status?runId=<id>` - Check generation status
-- `POST /api/inngest` - Inngest webhook receiver
+### Category Selection
 
-## Available Categories
+![Category selection interface with 8 different news categories](https://via.placeholder.com/800x400/10B981/FFFFFF?text=Category+Selection)
 
-- Technology
-- Business
-- Sports
-- Entertainment
-- Science
-- Health
-- Politics
-- Environment
+### Newsletter Preview
 
-## Development
+![AI-generated newsletter content with articles and summaries](https://via.placeholder.com/800x400/F59E0B/FFFFFF?text=Newsletter+Preview)
 
-### Adding New Categories
+---
 
-1. Update the `categories` array in `app/select/page.tsx`
-2. The system will automatically fetch news for new categories
-
-### Customizing AI Prompts
-
-Edit the system prompt in `inngest/functions/newsletter.ts` to change the newsletter style and format.
-
-### Styling
-
-The app uses Tailwind CSS. Customize styles in `tailwind.config.js` or modify the component classes.
-
-## Deployment
+## 🚀 Deployment
 
 ### Vercel (Recommended)
 
@@ -164,21 +268,39 @@ Make sure to set these in your production environment:
 - `OPENAI_API_KEY`
 - `INGEST_SIGNING_KEY`
 - `NEWS_API_KEY`
+- `EMAILJS_SERVICE_ID`
+- `EMAILJS_TEMPLATE_ID`
+- `EMAILJS_PUBLIC_KEY`
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `STRIPE_SECRET_KEY`
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+- `STRIPE_WEBHOOK_SECRET`
 
-## Troubleshooting
+---
 
-### Common Issues
+## 🎯 Key Features Explained
 
-1. **"Module not found" errors**: Run `npm install` to ensure all dependencies are installed
-2. **API key errors**: Verify your environment variables are correctly set
-3. **Inngest connection issues**: Check that the Inngest dev server is running
-4. **News API rate limits**: Free tier has 1000 requests/day limit
+### AI Newsletter Generation
 
-### Debug Mode
+The system fetches recent news articles from selected categories and uses OpenAI GPT-4 to create engaging, personalized summaries that are delivered via email.
 
-Enable debug logging by setting `DEBUG=inngest:*` in your environment variables.
+### Scheduled Workflows
 
-## Contributing
+Inngest handles the scheduling and execution of newsletter generation, ensuring reliable delivery even if the system encounters temporary issues.
+
+### User Preference Management
+
+Users can select their preferred news categories, delivery frequency, and easily activate/deactivate their newsletter subscription.
+
+### Real-time Dashboard
+
+A beautiful dashboard shows current preferences, newsletter status, and provides easy management of all settings.
+
+---
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -186,14 +308,29 @@ Enable debug logging by setting `DEBUG=inngest:*` in your environment variables.
 4. Test thoroughly
 5. Submit a pull request
 
-## License
+---
+
+## 📄 License
 
 MIT License - see LICENSE file for details
 
-## Support
+---
+
+## 🆘 Support
 
 For issues and questions:
 
 - Check the [Inngest documentation](https://www.inngest.com/docs)
 - Review [Next.js documentation](https://nextjs.org/docs)
 - Open an issue in this repository
+
+---
+
+## 🎉 Acknowledgments
+
+- Built with [Next.js](https://nextjs.org/)
+- Database powered by [Supabase](https://supabase.com/)
+- AI powered by [OpenAI](https://openai.com/)
+- Background jobs by [Inngest](https://www.inngest.com/)
+- Styled with [Tailwind CSS](https://tailwindcss.com/)
+- Deployed on [Vercel](https://vercel.com/)

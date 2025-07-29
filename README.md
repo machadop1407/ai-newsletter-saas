@@ -3,7 +3,8 @@
 <div align="center">
   <br />
   <a href="https://youtu.be/ugxI1o5SyMs" target="_blank">
-   <img width="1280" height="720" alt="Personalized AI Newsletter SaaS - Next.js & Supabase Tutorial" src="https://github.com/user-attachments/assets/819fc9b5-713e-4fbe-b659-dc1067d4bd82" />
+    <img width="1280" height="720" alt="Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of Copy of 10,000 REACT COMPONENTS (2)" src="https://github.com/user-attachments/assets/07311922-ae83-42a1-99c7-cfd243ebbe2c" />
+
   </a>
   <br />
   <div>
@@ -233,22 +234,6 @@ STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
 - [Tailwind CSS Docs](https://tailwindcss.com/docs)
 - [EmailJS Docs](https://www.emailjs.com/docs)
 - [Vercel](https://vercel.com/)
-
----
-
-## 📸 Screenshots
-
-### Dashboard
-
-![Dashboard showing user preferences and newsletter status](https://via.placeholder.com/800x400/3B82F6/FFFFFF?text=Dashboard)
-
-### Category Selection
-
-![Category selection interface with 8 different news categories](https://via.placeholder.com/800x400/10B981/FFFFFF?text=Category+Selection)
-
-### Newsletter Preview
-
-![AI-generated newsletter content with articles and summaries](https://via.placeholder.com/800x400/F59E0B/FFFFFF?text=Newsletter+Preview)
 
 ---
 

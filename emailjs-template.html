@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Personalized Newsletter</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f8fafc;
+      }
+      .container {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #e5e7eb;
+      }
+      .logo {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1f2937;
+        margin-bottom: 8px;
+      }
+      .subtitle {
+        color: #6b7280;
+        font-size: 16px;
+      }
+      .newsletter-content {
+        background-color: #f9fafb;
+        border-radius: 8px;
+        padding: 30px;
+        margin: 20px 0;
+        border-left: 4px solid #3b82f6;
+      }
+      .newsletter-content h1 {
+        color: #1f2937;
+        font-size: 24px;
+        margin-bottom: 20px;
+        margin-top: 0;
+      }
+      .newsletter-content h2 {
+        color: #374151;
+        font-size: 20px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+      }
+      .newsletter-content h3 {
+        color: #4b5563;
+        font-size: 18px;
+        margin-top: 25px;
+        margin-bottom: 12px;
+      }
+      .newsletter-content p {
+        margin-bottom: 16px;
+        color: #4b5563;
+      }
+      .newsletter-content strong {
+        color: #1f2937;
+        font-weight: 600;
+      }
+      .newsletter-content em {
+        color: #6b7280;
+        font-style: italic;
+      }
+      .newsletter-content blockquote {
+        border-left: 3px solid #3b82f6;
+        padding-left: 20px;
+        margin: 20px 0;
+        font-style: italic;
+        color: #6b7280;
+      }
+      .newsletter-content code {
+        background-color: #f3f4f6;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+      }
+      .newsletter-content pre {
+        background-color: #f3f4f6;
+        padding: 16px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 16px 0;
+      }
+      .newsletter-content pre code {
+        background: none;
+        padding: 0;
+      }
+      .newsletter-content a {
+        color: #3b82f6;
+        text-decoration: none;
+      }
+      .newsletter-content a:hover {
+        text-decoration: underline;
+      }
+      .newsletter-content ul,
+      .newsletter-content ol {
+        margin: 16px 0;
+        padding-left: 24px;
+      }
+      .newsletter-content li {
+        margin-bottom: 8px;
+        color: #4b5563;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+        color: #6b7280;
+        font-size: 14px;
+      }
+      .stats {
+        background-color: #eff6ff;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+        text-align: center;
+      }
+      .stats h3 {
+        color: #1e40af;
+        margin: 0 0 10px 0;
+        font-size: 18px;
+      }
+      .stats p {
+        margin: 5px 0;
+        color: #374151;
+      }
+      .unsubscribe {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+      }
+      .unsubscribe a {
+        color: #6b7280;
+        text-decoration: none;
+        font-size: 12px;
+      }
+      .unsubscribe a:hover {
+        text-decoration: underline;
+      }
+      @media (max-width: 600px) {
+        body {
+          padding: 10px;
+        }
+        .container {
+          padding: 20px;
+        }
+        .newsletter-content {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">📰 Personalized AI Newsletter</div>
+        <div class="subtitle">Your daily dose of curated news</div>
+      </div>
+
+      <div class="stats">
+        <h3>📊 Newsletter Summary</h3>
+        <p><strong>Categories:</strong> {{categories}}</p>
+        <p><strong>Articles analyzed:</strong> {{article_count}}</p>
+        <p><strong>Generated on:</strong> {{current_date}}</p>
+      </div>
+
+      <div class="newsletter-content">{{{newsletter_content}}}</div>
+
+      <div class="footer">
+        <p>This newsletter was generated just for you using AI technology.</p>
+        <p>Thank you for subscribing to our personalized newsletter service!</p>
+      </div>
+
+      <div class="unsubscribe">
+        <a href="#">Unsubscribe</a> | <a href="#">Update Preferences</a> |
+        <a href="#">Contact Support</a>
+      </div>
+    </div>
+  </body>
+</html>
